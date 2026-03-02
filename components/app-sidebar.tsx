@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
   IconDashboard,
   IconHelp,
@@ -9,13 +9,13 @@ import {
   IconSettings,
   IconUserCog,
   IconUsers,
-} from "@tabler/icons-react"
-import Link from "next/link"
+} from "@tabler/icons-react";
+import Link from "next/link";
 
-import { NavDocuments } from "@/components/nav-documents"
-import { NavMain } from "@/components/nav-main"
-import { NavSecondary } from "@/components/nav-secondary"
-import { NavUser } from "@/components/nav-user"
+import { NavDocuments } from "@/components/nav-documents";
+import { NavMain } from "@/components/nav-main";
+import { NavSecondary } from "@/components/nav-secondary";
+import { NavUser } from "@/components/nav-user";
 import {
   Sidebar,
   SidebarContent,
@@ -24,12 +24,12 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 
 const data = {
   user: {
-    name: "张三",
-    email: "zhangsan@example.com",
+    name: "李成杰",
+    email: "364762501@qq.com",
     avatar: "/avatars/shadcn.jpg",
   },
   navMain: [
@@ -68,7 +68,7 @@ const data = {
       icon: IconHelp,
     },
   ],
-}
+};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
@@ -82,7 +82,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             >
               <Link href="/dashboard">
                 <IconInnerShadowTop className="!size-5" />
-                <span className="text-base font-semibold">我的简历项目</span>
+                <span className="text-base font-semibold">LCJ的仪表盘</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -97,5 +97,5 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavUser user={data.user} />
       </SidebarFooter>
     </Sidebar>
-  )
+  );
 }

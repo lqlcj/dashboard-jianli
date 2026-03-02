@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
   IconEdit,
   IconMail,
@@ -10,50 +10,63 @@ import {
   IconSearch,
   IconTrash,
   IconUserPlus,
-} from "@tabler/icons-react"
+} from "@tabler/icons-react";
 
-import { useDashboardData } from "@/components/dashboard-data-provider"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { useDashboardData } from "@/components/dashboard-data-provider";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+} from "@/components/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
-type PersonnelStatus = "在岗" | "请假" | "离岗"
+type PersonnelStatus = "在岗" | "请假" | "离岗";
 
 type PersonnelRecord = {
-  id: number
-  name: string
-  role: string
-  department: string
-  email: string
-  phone: string
-  status: PersonnelStatus
-  joinedAt: string
-}
+  id: number;
+  name: string;
+  role: string;
+  department: string;
+  email: string;
+  phone: string;
+  status: PersonnelStatus;
+  joinedAt: string;
+};
 
-type PersonnelForm = Omit<PersonnelRecord, "id">
+type PersonnelForm = Omit<PersonnelRecord, "id">;
 
 type HelpTicket = {
-  id: string
-  title: string
-  priority: "高" | "中" | "低"
-  status: "待处理" | "处理中" | "已解决"
-  owner: string
-}
+  id: string;
+  title: string;
+  priority: "高" | "中" | "低";
+  status: "待处理" | "处理中" | "已解决";
+  owner: string;
+};
 
-const PERSONNEL_STORAGE_KEY = "dashboard-personnel-v1"
-const PERSONNEL_MOCK_URL = "/mock/personnel.json"
-const HELP_TICKETS_MOCK_URL = "/mock/help-tickets.json"
+const PERSONNEL_STORAGE_KEY = "dashboard-personnel-v1";
+const PERSONNEL_MOCK_URL = "/mock/personnel.json";
+const HELP_TICKETS_MOCK_URL = "/mock/help-tickets.json";
 
 const emptyPersonnelForm: PersonnelForm = {
   name: "",
@@ -63,66 +76,80 @@ const emptyPersonnelForm: PersonnelForm = {
   phone: "",
   status: "在岗",
   joinedAt: "",
-}
+};
 
 function isPersonnelList(value: unknown): value is PersonnelRecord[] {
-  if (!Array.isArray(value)) return false
+  if (!Array.isArray(value)) return false;
   return value.every(
     (item) =>
       typeof item === "object" &&
       item !== null &&
       typeof (item as PersonnelRecord).id === "number" &&
-      typeof (item as PersonnelRecord).name === "string"
-  )
+      typeof (item as PersonnelRecord).name === "string",
+  );
 }
 
 function isHelpTicketList(value: unknown): value is HelpTicket[] {
-  if (!Array.isArray(value)) return false
+  if (!Array.isArray(value)) return false;
   return value.every(
     (item) =>
       typeof item === "object" &&
       item !== null &&
       typeof (item as HelpTicket).id === "string" &&
-      typeof (item as HelpTicket).title === "string"
-  )
+      typeof (item as HelpTicket).title === "string",
+  );
 }
 
 function statusBadge(status: PersonnelStatus) {
   if (status === "在岗") {
-    return <Badge className="bg-emerald-100 text-emerald-700 hover:bg-emerald-100">在岗</Badge>
+    return (
+      <Badge className="bg-emerald-100 text-emerald-700 hover:bg-emerald-100">
+        在岗
+      </Badge>
+    );
   }
   if (status === "请假") {
-    return <Badge className="bg-amber-100 text-amber-700 hover:bg-amber-100">请假</Badge>
+    return (
+      <Badge className="bg-amber-100 text-amber-700 hover:bg-amber-100">
+        请假
+      </Badge>
+    );
   }
-  return <Badge className="bg-slate-200 text-slate-700 hover:bg-slate-200">离岗</Badge>
+  return (
+    <Badge className="bg-slate-200 text-slate-700 hover:bg-slate-200">
+      离岗
+    </Badge>
+  );
 }
 
 function getInitials(name: string) {
-  const n = name.trim()
-  return n.length > 2 ? n.slice(-2) : n || "成员"
+  const n = name.trim();
+  return n.length > 2 ? n.slice(-2) : n || "成员";
 }
 
 export function PersonnelManagementPageContent() {
-  const [records, setRecords] = React.useState<PersonnelRecord[]>([])
-  const [keyword, setKeyword] = React.useState("")
-  const [statusFilter, setStatusFilter] = React.useState<"全部" | PersonnelStatus>("全部")
-  const [editingId, setEditingId] = React.useState<number | null>(null)
-  const [form, setForm] = React.useState<PersonnelForm>(emptyPersonnelForm)
-  const baselineRef = React.useRef<PersonnelRecord[]>([])
+  const [records, setRecords] = React.useState<PersonnelRecord[]>([]);
+  const [keyword, setKeyword] = React.useState("");
+  const [statusFilter, setStatusFilter] = React.useState<
+    "全部" | PersonnelStatus
+  >("全部");
+  const [editingId, setEditingId] = React.useState<number | null>(null);
+  const [form, setForm] = React.useState<PersonnelForm>(emptyPersonnelForm);
+  const baselineRef = React.useRef<PersonnelRecord[]>([]);
 
   React.useEffect(() => {
-    let isMounted = true
+    let isMounted = true;
 
     async function load() {
-      let hasLocal = false
+      let hasLocal = false;
       try {
-        const saved = window.localStorage.getItem(PERSONNEL_STORAGE_KEY)
+        const saved = window.localStorage.getItem(PERSONNEL_STORAGE_KEY);
         if (saved) {
-          const parsed: unknown = JSON.parse(saved)
+          const parsed: unknown = JSON.parse(saved);
           if (isPersonnelList(parsed)) {
             if (parsed.length > 0) {
-              hasLocal = true
-              if (isMounted) setRecords(parsed)
+              hasLocal = true;
+              if (isMounted) setRecords(parsed);
             }
           }
         }
@@ -131,83 +158,89 @@ export function PersonnelManagementPageContent() {
       }
 
       try {
-        const response = await fetch(PERSONNEL_MOCK_URL, { cache: "no-store" })
-        if (!response.ok) return
-        const json: unknown = await response.json()
-        if (!isPersonnelList(json)) return
-        baselineRef.current = json
+        const response = await fetch(PERSONNEL_MOCK_URL, { cache: "no-store" });
+        if (!response.ok) return;
+        const json: unknown = await response.json();
+        if (!isPersonnelList(json)) return;
+        baselineRef.current = json;
         if (!hasLocal && isMounted) {
-          setRecords(json)
+          setRecords(json);
         }
       } catch {
         // Keep current records.
       }
     }
 
-    load()
+    load();
     return () => {
-      isMounted = false
-    }
-  }, [])
+      isMounted = false;
+    };
+  }, []);
 
   React.useEffect(() => {
-    window.localStorage.setItem(PERSONNEL_STORAGE_KEY, JSON.stringify(records))
-  }, [records])
+    window.localStorage.setItem(PERSONNEL_STORAGE_KEY, JSON.stringify(records));
+  }, [records]);
 
   const filteredRecords = React.useMemo(() => {
-    const q = keyword.trim().toLowerCase()
+    const q = keyword.trim().toLowerCase();
     return records.filter((item) => {
       const matchKeyword =
         !q ||
         `${item.name} ${item.role} ${item.department} ${item.email} ${item.phone}`
           .toLowerCase()
-          .includes(q)
-      const matchStatus = statusFilter === "全部" || item.status === statusFilter
-      return matchKeyword && matchStatus
-    })
-  }, [keyword, records, statusFilter])
+          .includes(q);
+      const matchStatus =
+        statusFilter === "全部" || item.status === statusFilter;
+      return matchKeyword && matchStatus;
+    });
+  }, [keyword, records, statusFilter]);
 
   const metrics = React.useMemo(() => {
-    const total = records.length
-    const active = records.filter((item) => item.status === "在岗").length
-    const leave = records.filter((item) => item.status === "请假").length
-    const deptCount = new Set(records.map((item) => item.department)).size
-    return { total, active, leave, deptCount }
-  }, [records])
+    const total = records.length;
+    const active = records.filter((item) => item.status === "在岗").length;
+    const leave = records.filter((item) => item.status === "请假").length;
+    const deptCount = new Set(records.map((item) => item.department)).size;
+    return { total, active, leave, deptCount };
+  }, [records]);
 
   const resetForm = () => {
-    setEditingId(null)
-    setForm(emptyPersonnelForm)
-  }
+    setEditingId(null);
+    setForm(emptyPersonnelForm);
+  };
 
   const resetPersonnel = () => {
-    setRecords(baselineRef.current)
-    resetForm()
-  }
+    setRecords(baselineRef.current);
+    resetForm();
+  };
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    if (!form.name.trim() || !form.email.trim()) return
+    event.preventDefault();
+    if (!form.name.trim() || !form.email.trim()) return;
 
     const payload: PersonnelForm = {
       ...form,
       joinedAt: form.joinedAt || new Date().toISOString().slice(0, 10),
-    }
+    };
 
     if (editingId === null) {
-      const nextId = records.length > 0 ? Math.max(...records.map((item) => item.id)) + 1 : 1
-      setRecords((prev) => [...prev, { id: nextId, ...payload }])
+      const nextId =
+        records.length > 0
+          ? Math.max(...records.map((item) => item.id)) + 1
+          : 1;
+      setRecords((prev) => [...prev, { id: nextId, ...payload }]);
     } else {
       setRecords((prev) =>
-        prev.map((item) => (item.id === editingId ? { id: item.id, ...payload } : item))
-      )
+        prev.map((item) =>
+          item.id === editingId ? { id: item.id, ...payload } : item,
+        ),
+      );
     }
 
-    resetForm()
-  }
+    resetForm();
+  };
 
   const startEdit = (record: PersonnelRecord) => {
-    setEditingId(record.id)
+    setEditingId(record.id);
     setForm({
       name: record.name,
       role: record.role,
@@ -216,15 +249,15 @@ export function PersonnelManagementPageContent() {
       phone: record.phone,
       status: record.status,
       joinedAt: record.joinedAt,
-    })
-  }
+    });
+  };
 
   const removeRecord = (id: number) => {
-    setRecords((prev) => prev.filter((item) => item.id !== id))
+    setRecords((prev) => prev.filter((item) => item.id !== id));
     if (editingId === id) {
-      resetForm()
+      resetForm();
     }
-  }
+  };
 
   return (
     <div className="grid gap-4 px-4 py-4 md:px-6 md:py-6">
@@ -273,7 +306,9 @@ export function PersonnelManagementPageContent() {
               <Input
                 id="pm-name"
                 value={form.name}
-                onChange={(e) => setForm((prev) => ({ ...prev, name: e.target.value }))}
+                onChange={(e) =>
+                  setForm((prev) => ({ ...prev, name: e.target.value }))
+                }
                 placeholder="请输入姓名"
                 required
               />
@@ -282,7 +317,9 @@ export function PersonnelManagementPageContent() {
               <Label htmlFor="pm-role">岗位</Label>
               <Select
                 value={form.role}
-                onValueChange={(value) => setForm((prev) => ({ ...prev, role: value }))}
+                onValueChange={(value) =>
+                  setForm((prev) => ({ ...prev, role: value }))
+                }
               >
                 <SelectTrigger id="pm-role">
                   <SelectValue />
@@ -301,7 +338,9 @@ export function PersonnelManagementPageContent() {
               <Input
                 id="pm-dept"
                 value={form.department}
-                onChange={(e) => setForm((prev) => ({ ...prev, department: e.target.value }))}
+                onChange={(e) =>
+                  setForm((prev) => ({ ...prev, department: e.target.value }))
+                }
                 placeholder="例如：研发部"
               />
             </div>
@@ -329,7 +368,9 @@ export function PersonnelManagementPageContent() {
                 id="pm-email"
                 type="email"
                 value={form.email}
-                onChange={(e) => setForm((prev) => ({ ...prev, email: e.target.value }))}
+                onChange={(e) =>
+                  setForm((prev) => ({ ...prev, email: e.target.value }))
+                }
                 placeholder="name@company.com"
                 required
               />
@@ -339,7 +380,9 @@ export function PersonnelManagementPageContent() {
               <Input
                 id="pm-phone"
                 value={form.phone}
-                onChange={(e) => setForm((prev) => ({ ...prev, phone: e.target.value }))}
+                onChange={(e) =>
+                  setForm((prev) => ({ ...prev, phone: e.target.value }))
+                }
                 placeholder="13800000000"
               />
             </div>
@@ -349,7 +392,9 @@ export function PersonnelManagementPageContent() {
                 id="pm-joined"
                 type="date"
                 value={form.joinedAt}
-                onChange={(e) => setForm((prev) => ({ ...prev, joinedAt: e.target.value }))}
+                onChange={(e) =>
+                  setForm((prev) => ({ ...prev, joinedAt: e.target.value }))
+                }
               />
             </div>
             <div className="flex items-end gap-2">
@@ -358,7 +403,12 @@ export function PersonnelManagementPageContent() {
                 {editingId === null ? "新增人员" : "保存修改"}
               </Button>
               {editingId !== null && (
-                <Button type="button" variant="outline" className="w-full" onClick={resetForm}>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full"
+                  onClick={resetForm}
+                >
                   取消
                 </Button>
               )}
@@ -382,7 +432,9 @@ export function PersonnelManagementPageContent() {
             </div>
             <Select
               value={statusFilter}
-              onValueChange={(value: "全部" | PersonnelStatus) => setStatusFilter(value)}
+              onValueChange={(value: "全部" | PersonnelStatus) =>
+                setStatusFilter(value)
+              }
             >
               <SelectTrigger className="w-32">
                 <SelectValue />
@@ -412,7 +464,10 @@ export function PersonnelManagementPageContent() {
               <TableBody>
                 {filteredRecords.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={6} className="text-muted-foreground h-20 text-center">
+                    <TableCell
+                      colSpan={6}
+                      className="text-muted-foreground h-20 text-center"
+                    >
                       没有匹配到人员
                     </TableCell>
                   </TableRow>
@@ -426,13 +481,17 @@ export function PersonnelManagementPageContent() {
                           </div>
                           <div>
                             <p className="font-medium">{item.name}</p>
-                            <p className="text-muted-foreground text-xs">ID #{item.id}</p>
+                            <p className="text-muted-foreground text-xs">
+                              ID #{item.id}
+                            </p>
                           </div>
                         </div>
                       </TableCell>
                       <TableCell>
                         <p>{item.role}</p>
-                        <p className="text-muted-foreground text-xs">{item.department}</p>
+                        <p className="text-muted-foreground text-xs">
+                          {item.department}
+                        </p>
                       </TableCell>
                       <TableCell>
                         <p className="flex items-center gap-1.5 text-sm">
@@ -448,11 +507,21 @@ export function PersonnelManagementPageContent() {
                       <TableCell>{item.joinedAt || "-"}</TableCell>
                       <TableCell>
                         <div className="flex justify-end gap-2">
-                          <Button type="button" size="sm" variant="outline" onClick={() => startEdit(item)}>
+                          <Button
+                            type="button"
+                            size="sm"
+                            variant="outline"
+                            onClick={() => startEdit(item)}
+                          >
                             <IconEdit />
                             编辑
                           </Button>
-                          <Button type="button" size="sm" variant="destructive" onClick={() => removeRecord(item.id)}>
+                          <Button
+                            type="button"
+                            size="sm"
+                            variant="destructive"
+                            onClick={() => removeRecord(item.id)}
+                          >
                             <IconTrash />
                             删除
                           </Button>
@@ -467,16 +536,16 @@ export function PersonnelManagementPageContent() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
 
 export function SettingsPageContent() {
-  const [name, setName] = React.useState("张三")
-  const [email, setEmail] = React.useState("zhangsan@example.com")
-  const [language, setLanguage] = React.useState("zh-CN")
-  const [systemNotice, setSystemNotice] = React.useState(true)
-  const [weeklySummary, setWeeklySummary] = React.useState(true)
-  const [riskAlert, setRiskAlert] = React.useState(false)
+  const [name, setName] = React.useState("李成杰");
+  const [email, setEmail] = React.useState("364762501@qq.com");
+  const [language, setLanguage] = React.useState("zh-CN");
+  const [systemNotice, setSystemNotice] = React.useState(true);
+  const [weeklySummary, setWeeklySummary] = React.useState(true);
+  const [riskAlert, setRiskAlert] = React.useState(false);
 
   return (
     <div className="grid gap-4 px-4 py-4 md:px-6 md:py-6">
@@ -488,11 +557,19 @@ export function SettingsPageContent() {
         <CardContent className="grid gap-4 md:grid-cols-2">
           <div className="grid gap-2">
             <Label htmlFor="setting-name">姓名</Label>
-            <Input id="setting-name" value={name} onChange={(e) => setName(e.target.value)} />
+            <Input
+              id="setting-name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
           </div>
           <div className="grid gap-2">
             <Label htmlFor="setting-email">邮箱</Label>
-            <Input id="setting-email" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <Input
+              id="setting-email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
           </div>
           <div className="grid gap-2">
             <Label htmlFor="setting-language">语言</Label>
@@ -519,15 +596,24 @@ export function SettingsPageContent() {
         </CardHeader>
         <CardContent className="grid gap-4">
           <label className="flex items-center gap-3">
-            <Checkbox checked={systemNotice} onCheckedChange={(v) => setSystemNotice(v === true)} />
+            <Checkbox
+              checked={systemNotice}
+              onCheckedChange={(v) => setSystemNotice(v === true)}
+            />
             <span className="text-sm">系统公告通知</span>
           </label>
           <label className="flex items-center gap-3">
-            <Checkbox checked={weeklySummary} onCheckedChange={(v) => setWeeklySummary(v === true)} />
+            <Checkbox
+              checked={weeklySummary}
+              onCheckedChange={(v) => setWeeklySummary(v === true)}
+            />
             <span className="text-sm">每周项目摘要</span>
           </label>
           <label className="flex items-center gap-3">
-            <Checkbox checked={riskAlert} onCheckedChange={(v) => setRiskAlert(v === true)} />
+            <Checkbox
+              checked={riskAlert}
+              onCheckedChange={(v) => setRiskAlert(v === true)}
+            />
             <span className="text-sm">风险告警即时提醒</span>
           </label>
           <div>
@@ -538,32 +624,34 @@ export function SettingsPageContent() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
 
 export function HelpPageContent() {
-  const [tickets, setTickets] = React.useState<HelpTicket[]>([])
+  const [tickets, setTickets] = React.useState<HelpTicket[]>([]);
 
   React.useEffect(() => {
-    let isMounted = true
+    let isMounted = true;
     async function loadTickets() {
       try {
-        const response = await fetch(HELP_TICKETS_MOCK_URL, { cache: "no-store" })
-        if (!response.ok) return
-        const json: unknown = await response.json()
-        if (!isHelpTicketList(json)) return
+        const response = await fetch(HELP_TICKETS_MOCK_URL, {
+          cache: "no-store",
+        });
+        if (!response.ok) return;
+        const json: unknown = await response.json();
+        if (!isHelpTicketList(json)) return;
         if (isMounted) {
-          setTickets(json)
+          setTickets(json);
         }
       } catch {
         // Keep empty list on fetch error.
       }
     }
-    loadTickets()
+    loadTickets();
     return () => {
-      isMounted = false
-    }
-  }, [])
+      isMounted = false;
+    };
+  }, []);
 
   const faq = [
     {
@@ -578,7 +666,7 @@ export function HelpPageContent() {
       q: "如何恢复模拟数据？",
       a: "人员管理页点击“重置模拟数据”即可恢复 public/mock 内的默认数据。",
     },
-  ]
+  ];
 
   return (
     <div className="grid gap-4 px-4 py-4 md:px-6 md:py-6">
@@ -588,9 +676,15 @@ export function HelpPageContent() {
           <CardDescription>推荐按以下顺序完成日常管理。</CardDescription>
         </CardHeader>
         <CardContent className="grid gap-2 text-sm">
-          <div className="rounded-md border p-3">1. 在“人员管理”维护成员信息。</div>
-          <div className="rounded-md border p-3">2. 在“团队成员”查看只读名单。</div>
-          <div className="rounded-md border p-3">3. 在“搜索”快速定位目标记录。</div>
+          <div className="rounded-md border p-3">
+            1. 在“人员管理”维护成员信息。
+          </div>
+          <div className="rounded-md border p-3">
+            2. 在“团队成员”查看只读名单。
+          </div>
+          <div className="rounded-md border p-3">
+            3. 在“搜索”快速定位目标记录。
+          </div>
         </CardContent>
       </Card>
 
@@ -612,7 +706,9 @@ export function HelpPageContent() {
       <Card>
         <CardHeader>
           <CardTitle>测试数据</CardTitle>
-          <CardDescription>来自 `public/mock/help-tickets.json` 的模拟工单。</CardDescription>
+          <CardDescription>
+            来自 `public/mock/help-tickets.json` 的模拟工单。
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="overflow-hidden rounded-lg border">
@@ -629,7 +725,10 @@ export function HelpPageContent() {
               <TableBody>
                 {tickets.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={5} className="text-muted-foreground h-20 text-center">
+                    <TableCell
+                      colSpan={5}
+                      className="text-muted-foreground h-20 text-center"
+                    >
                       暂无测试数据
                     </TableCell>
                   </TableRow>
@@ -652,27 +751,31 @@ export function HelpPageContent() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
 
 export function SearchPageContent() {
-  const { records } = useDashboardData()
-  const [keyword, setKeyword] = React.useState("")
+  const { records } = useDashboardData();
+  const [keyword, setKeyword] = React.useState("");
 
   const results = React.useMemo(() => {
-    const q = keyword.trim().toLowerCase()
-    if (!q) return records
+    const q = keyword.trim().toLowerCase();
+    if (!q) return records;
     return records.filter((item) =>
-      `${item.header} ${item.type} ${item.status} ${item.reviewer}`.toLowerCase().includes(q)
-    )
-  }, [records, keyword])
+      `${item.header} ${item.type} ${item.status} ${item.reviewer}`
+        .toLowerCase()
+        .includes(q),
+    );
+  }, [records, keyword]);
 
   return (
     <div className="grid gap-4 px-4 py-4 md:px-6 md:py-6">
       <Card>
         <CardHeader>
           <CardTitle>全局搜索</CardTitle>
-          <CardDescription>按标题、类型、状态、负责人检索项目数据。</CardDescription>
+          <CardDescription>
+            按标题、类型、状态、负责人检索项目数据。
+          </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4">
           <Input
@@ -680,7 +783,9 @@ export function SearchPageContent() {
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
           />
-          <div className="text-muted-foreground text-sm">共匹配 {results.length} 条记录</div>
+          <div className="text-muted-foreground text-sm">
+            共匹配 {results.length} 条记录
+          </div>
           <div className="overflow-hidden rounded-lg border">
             <Table>
               <TableHeader>
@@ -694,7 +799,10 @@ export function SearchPageContent() {
               <TableBody>
                 {results.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={4} className="text-muted-foreground h-20 text-center">
+                    <TableCell
+                      colSpan={4}
+                      className="text-muted-foreground h-20 text-center"
+                    >
                       没有匹配结果
                     </TableCell>
                   </TableRow>
@@ -716,29 +824,32 @@ export function SearchPageContent() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
 
 export function TeamMembersReadOnlyPageContent() {
-  const { records } = useDashboardData()
+  const { records } = useDashboardData();
 
   const members = React.useMemo(() => {
-    const map = new Map<string, { name: string; taskCount: number; activeCount: number }>()
+    const map = new Map<
+      string,
+      { name: string; taskCount: number; activeCount: number }
+    >();
 
     for (const record of records) {
-      const name = record.reviewer?.trim() || "待分配"
-      if (name === "待分配") continue
+      const name = record.reviewer?.trim() || "待分配";
+      if (name === "待分配") continue;
 
-      const current = map.get(name) ?? { name, taskCount: 0, activeCount: 0 }
-      current.taskCount += 1
+      const current = map.get(name) ?? { name, taskCount: 0, activeCount: 0 };
+      current.taskCount += 1;
       if (record.status === "进行中") {
-        current.activeCount += 1
+        current.activeCount += 1;
       }
-      map.set(name, current)
+      map.set(name, current);
     }
 
-    return Array.from(map.values()).sort((a, b) => b.taskCount - a.taskCount)
-  }, [records])
+    return Array.from(map.values()).sort((a, b) => b.taskCount - a.taskCount);
+  }, [records]);
 
   return (
     <div className="grid gap-4 px-4 py-4 md:px-6 md:py-6">
@@ -761,7 +872,10 @@ export function TeamMembersReadOnlyPageContent() {
               <TableBody>
                 {members.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={4} className="text-muted-foreground h-20 text-center">
+                    <TableCell
+                      colSpan={4}
+                      className="text-muted-foreground h-20 text-center"
+                    >
                       暂无成员数据
                     </TableCell>
                   </TableRow>
@@ -772,7 +886,9 @@ export function TeamMembersReadOnlyPageContent() {
                       <TableCell>{member.taskCount}</TableCell>
                       <TableCell>{member.activeCount}</TableCell>
                       <TableCell>
-                        <Badge variant="outline">{member.activeCount > 0 ? "在岗" : "空闲"}</Badge>
+                        <Badge variant="outline">
+                          {member.activeCount > 0 ? "在岗" : "空闲"}
+                        </Badge>
                       </TableCell>
                     </TableRow>
                   ))
@@ -783,5 +899,5 @@ export function TeamMembersReadOnlyPageContent() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
