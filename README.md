@@ -1,6 +1,6 @@
 # lcj仪表盘简�?
 
-基于 Next.js App Router 的仪表盘简历项目，包含�?
+基于 Next.js App Router 的仪表盘中后台项目，包含:
 
 - 仪表盘主页（统计、图表、模块管理）
 - 人员管理（增删改查）
@@ -29,34 +29,23 @@ npm run dev
 - `public/mock/personnel.json`
 - `public/mock/help-tickets.json`
 
-应用读取优先级：
-
-1. 浏览�?`localStorage`（用户已编辑数据�?
-2. `public/mock/*.json`（默认模拟数据）
-
-相关说明�?
-
-- `DashboardDataProvider` 会读�?`/mock/dashboard-records.json`
-- 人员管理页会读取 `/mock/personnel.json`
-- 帮助页测试数据会读取 `/mock/help-tickets.json`
-
 ## 功能说明
 
 ### 人员管理
 
-- 支持新增、编辑、删除人�?
-- 支持关键词搜索与状态筛�?
-- 支持“重置模拟数据”回�?`public/mock/personnel.json`
+- 支持新增、编辑、删除人
+- 支持关键词搜索与状态筛
+- 支持“重置模拟数据”`public/mock/personnel.json`
 
 ### 团队成员
 
 - 只读展示成员任务统计
-- 不提供增删改查操�?
+- 不提供增删改查操
 
 ### 帮助
 
 - 使用指引 + FAQ
-- 测试工单数据表（来自 `public/mock/help-tickets.json`�?
+- 测试工单数据表（来自 `public/mock/help-tickets.json`
 
 ## 上线前检?
 
