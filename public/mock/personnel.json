@@ -1,0 +1,82 @@
+[
+  {
+    "id": 1,
+    "name": "王雪",
+    "role": "产品经理",
+    "department": "产品部",
+    "email": "wangxue@company.com",
+    "phone": "13800001111",
+    "status": "在岗",
+    "joinedAt": "2024-01-18"
+  },
+  {
+    "id": 2,
+    "name": "李航",
+    "role": "前端工程师",
+    "department": "研发部",
+    "email": "lihang@company.com",
+    "phone": "13800002222",
+    "status": "在岗",
+    "joinedAt": "2024-03-02"
+  },
+  {
+    "id": 3,
+    "name": "周宁",
+    "role": "测试工程师",
+    "department": "质量部",
+    "email": "zhouning@company.com",
+    "phone": "13800003333",
+    "status": "请假",
+    "joinedAt": "2024-04-16"
+  },
+  {
+    "id": 4,
+    "name": "赵琪",
+    "role": "后端工程师",
+    "department": "研发部",
+    "email": "zhaoqi@company.com",
+    "phone": "13800004444",
+    "status": "在岗",
+    "joinedAt": "2024-05-21"
+  },
+  {
+    "id": 5,
+    "name": "陈楠",
+    "role": "UI 设计师",
+    "department": "设计部",
+    "email": "chennan@company.com",
+    "phone": "13800005555",
+    "status": "在岗",
+    "joinedAt": "2024-06-08"
+  },
+  {
+    "id": 6,
+    "name": "刘洋",
+    "role": "后端工程师",
+    "department": "研发部",
+    "email": "liuyang@company.com",
+    "phone": "13800006666",
+    "status": "离岗",
+    "joinedAt": "2023-11-30"
+  },
+  {
+    "id": 7,
+    "name": "马可",
+    "role": "测试工程师",
+    "department": "质量部",
+    "email": "make@company.com",
+    "phone": "13800007777",
+    "status": "在岗",
+    "joinedAt": "2024-07-03"
+  },
+  {
+    "id": 8,
+    "name": "孙悦",
+    "role": "产品经理",
+    "department": "产品部",
+    "email": "sunyue@company.com",
+    "phone": "13800008888",
+    "status": "请假",
+    "joinedAt": "2024-02-26"
+  }
+]

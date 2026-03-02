@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# lcj仪表盘简历
 
-## Getting Started
+基于 Next.js App Router 的仪表盘简历项目，包含：
 
-First, run the development server:
+- 仪表盘主页（统计、图表、模块管理）
+- 人员管理（增删改查）
+- 团队成员（只读展示）
+- 设置、帮助、搜索子路由
+
+## 技术栈
+
+- Next.js 16
+- React 19
+- Tailwind CSS 4
+- shadcn/ui
+
+## 本地运行
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+默认访问：`http://localhost:3000`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Mock 数据（已迁移到 public）
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+项目已将模拟数据放到 `public/mock`，部署后可直接通过静态路径访问：
 
-## Learn More
+- `public/mock/dashboard-records.json`
+- `public/mock/personnel.json`
+- `public/mock/help-tickets.json`
 
-To learn more about Next.js, take a look at the following resources:
+应用读取优先级：
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. 浏览器 `localStorage`（用户已编辑数据）
+2. `public/mock/*.json`（默认模拟数据）
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+相关说明：
 
-## Deploy on Vercel
+- `DashboardDataProvider` 会读取 `/mock/dashboard-records.json`
+- 人员管理页会读取 `/mock/personnel.json`
+- 帮助页测试数据会读取 `/mock/help-tickets.json`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 功能说明
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 人员管理
+
+- 支持新增、编辑、删除人员
+- 支持关键词搜索与状态筛选
+- 支持“重置模拟数据”回到 `public/mock/personnel.json`
+
+### 团队成员
+
+- 只读展示成员任务统计
+- 不提供增删改查操作
+
+### 帮助
+
+- 使用指引 + FAQ
+- 测试工单数据表（来自 `public/mock/help-tickets.json`）
+
+## 上线前检查
+
+```bash
+npm run lint
+npm run build
+```
+
+## Cloudflare 部署建议
+
+如果你用 Cloudflare Pages 部署 Next.js：
+
+1. 构建命令：`npm run build`
+2. 输出目录：按你当前部署方案选择（Next.js 适配器方案或静态方案）
+3. 确认 `public/mock` 目录被包含在部署产物中
+
+部署后可直接验证：
+
+- `/mock/dashboard-records.json`
+- `/mock/personnel.json`
+- `/mock/help-tickets.json`
+
+以上三个地址可访问即代表模拟数据可用。
