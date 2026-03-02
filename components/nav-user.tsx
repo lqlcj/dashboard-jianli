@@ -1,5 +1,7 @@
 "use client"
 
+import { useState } from "react"
+import { useRouter } from "next/navigation"
 import {
   IconCreditCard,
   IconDotsVertical,
@@ -8,11 +10,7 @@ import {
   IconUserCircle,
 } from "@tabler/icons-react"
 
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -39,6 +37,23 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
+  const router = useRouter()
+  const [isLoggingOut, setIsLoggingOut] = useState(false)
+
+  async function handleLogout() {
+    if (isLoggingOut) {
+      return
+    }
+
+    setIsLoggingOut(true)
+    try {
+      await fetch("/api/auth/logout", { method: "POST" })
+    } finally {
+      router.replace("/login")
+      router.refresh()
+      setIsLoggingOut(false)
+    }
+  }
 
   return (
     <SidebarMenu>
@@ -86,21 +101,27 @@ export function NavUser({
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 <IconUserCircle />
-                账号
+                Account
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <IconCreditCard />
-                账单
+                Billing
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <IconNotification />
-                通知
+                Notifications
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem
+              variant="destructive"
+              disabled={isLoggingOut}
+              onSelect={() => {
+                void handleLogout()
+              }}
+            >
               <IconLogout />
-              退出登录
+              {isLoggingOut ? "退出中..." : "退出登录"}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -108,3 +129,4 @@ export function NavUser({
     </SidebarMenu>
   )
 }
+
