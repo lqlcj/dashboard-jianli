@@ -64,3 +64,7 @@ npm run dev
 npm run lint
 npm run build
 ```
+<<<<<<< HEAD
+=======
+
+>>>>>>> ebd7d6e8a6f4d710e2fd95d3b755cf9b4e6022fa
