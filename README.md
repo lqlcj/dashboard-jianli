@@ -1,4 +1,4 @@
-# lcj仪表盘简�?
+# lcj仪表盘中后台
 
 基于 Next.js App Router 的仪表盘中后台项目，包含:
 
