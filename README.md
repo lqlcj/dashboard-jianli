@@ -1,69 +1,11 @@
-# Dashboard 简历项目
+# lcj仪表盘简�?
 
-一个基于 Next.js App Router 的企业管理仪表盘示例项目，包含登录鉴权、看板数据展示、项目模板管理、人员管理、团队只读视图、帮助中心与全局搜索。
+基于 Next.js App Router 的仪表盘简历项目，包含�?
 
-## 项目定位
-
-- 用途: 前端/全栈简历项目、管理后台模板、课程作业原型
-- 场景: 中小团队的任务看板与人员信息维护
-- 形态: 单仓库前端应用（内置 Mock 数据 + 本地持久化）
-
-## 核心功能
-
-### 1) 登录与访问控制
-
-- 登录页: `/login`
-- 登录接口: `POST /api/auth/login`
-- 退出接口: `POST /api/auth/logout`
-- 基于 Cookie 的会话状态（`dashboard_auth`）
-- `middleware.ts` 对 `/dashboard/**` 做鉴权拦截，未登录自动跳转到登录页
-- 登录后支持根据 `next` 参数回跳到原目标页面
-
-### 2) 仪表盘首页
-
-- 数据概览卡片（统计信息）
-- 交互式面积图（支持 90 天 / 30 天 / 7 天切换）
-- 项目模板数据表（增删改查 + 关键词搜索）
-
-### 3) 项目模板管理（Dashboard Data）
-
-- 表格展示模板记录（标题、类型、状态、负责人等）
-- 支持新增、编辑、删除
-- 支持关键字检索
-- 支持一键重置到基线数据
-- 数据持久化到 `localStorage`，刷新后不丢失
-
-### 4) 人员管理（Project Management）
-
-- 人员信息增删改查
-- 条件筛选（状态）与关键词搜索
-- 指标统计（总人数、在岗、请假、部门数）
-- 支持重置为 `public/mock/personnel.json` 初始数据
-
-### 5) 团队成员（只读）
-
-- 从全局记录聚合成员任务数据
-- 展示成员任务总数、进行中数量、状态
-- 只读视图，不提供编辑入口
-
-### 6) 帮助中心 + 全局搜索
-
-- 使用指引与 FAQ
-- 帮助工单表（来自 `public/mock/help-tickets.json`）
-- 全局搜索页，按标题/类型/状态/负责人检索
-
-## 数据策略
-
-项目采用“本地优先 + Mock 回退”策略:
-
-1. 先读取 `localStorage`（用户编辑后的数据）
-2. 若本地无数据，再读取 `public/mock/*.json` 作为基线
-
-当前使用的 Mock 文件:
-
-- `public/mock/dashboard-records.json`
-- `public/mock/personnel.json`
-- `public/mock/help-tickets.json`
+- 仪表盘主页（统计、图表、模块管理）
+- 人员管理（增删改查）
+- 团队成员（只读展示）
+- 设置、帮助、搜索子路由
 
 ## 技术栈
 
@@ -100,7 +42,42 @@ npm run dev
 
 默认访问: `http://localhost:3000`
 
-## 构建检查
+项目已将模拟数据放到 `public/mock`，部署后可直接通过静态路径访问：
+
+- `public/mock/dashboard-records.json`
+- `public/mock/personnel.json`
+- `public/mock/help-tickets.json`
+
+应用读取优先级：
+
+1. 浏览�?`localStorage`（用户已编辑数据�?
+2. `public/mock/*.json`（默认模拟数据）
+
+相关说明�?
+
+- `DashboardDataProvider` 会读�?`/mock/dashboard-records.json`
+- 人员管理页会读取 `/mock/personnel.json`
+- 帮助页测试数据会读取 `/mock/help-tickets.json`
+
+## 功能说明
+
+### 人员管理
+
+- 支持新增、编辑、删除人�?
+- 支持关键词搜索与状态筛�?
+- 支持“重置模拟数据”回�?`public/mock/personnel.json`
+
+### 团队成员
+
+- 只读展示成员任务统计
+- 不提供增删改查操�?
+
+### 帮助
+
+- 使用指引 + FAQ
+- 测试工单数据表（来自 `public/mock/help-tickets.json`�?
+
+## 上线前检?
 
 ```bash
 npm run lint
@@ -117,7 +94,7 @@ npm run build
 如果使用 `@cloudflare/next-on-pages` 构建，动态路由需要显式声明 Edge Runtime，例如:
 
 ```ts
-export const runtime = "edge"
+export const runtime = "edge";
 ```
 
 本项目当前关键动态路由已包含该配置（如 `/login`、`/api/auth/*`、`/dashboard/[slug]`）。
