@@ -1,4 +1,6 @@
-import { notFound } from "next/navigation"
+import { notFound } from "next/navigation";
+
+export const runtime = "edge";
 
 import {
   HelpPageContent,
@@ -6,46 +8,46 @@ import {
   SearchPageContent,
   SettingsPageContent,
   TeamMembersReadOnlyPageContent,
-} from "@/components/dashboard-subroute-pages"
+} from "@/components/dashboard-subroute-pages";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import { dashboardPageConfigs } from "@/lib/dashboard-pages"
+} from "@/components/ui/card";
+import { dashboardPageConfigs } from "@/lib/dashboard-pages";
 
 export default async function DashboardSubPage({
   params,
 }: {
-  params: Promise<{ slug: string }>
+  params: Promise<{ slug: string }>;
 }) {
-  const { slug } = await params
-  const config = dashboardPageConfigs[slug]
+  const { slug } = await params;
+  const config = dashboardPageConfigs[slug];
 
   if (!config) {
-    notFound()
+    notFound();
   }
 
   if (slug === "project-management") {
-    return <PersonnelManagementPageContent />
+    return <PersonnelManagementPageContent />;
   }
 
   if (slug === "team-members") {
-    return <TeamMembersReadOnlyPageContent />
+    return <TeamMembersReadOnlyPageContent />;
   }
 
   if (slug === "settings") {
-    return <SettingsPageContent />
+    return <SettingsPageContent />;
   }
 
   if (slug === "help") {
-    return <HelpPageContent />
+    return <HelpPageContent />;
   }
 
   if (slug === "search") {
-    return <SearchPageContent />
+    return <SearchPageContent />;
   }
 
   return (
@@ -67,5 +69,5 @@ export default async function DashboardSubPage({
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

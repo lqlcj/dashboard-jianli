@@ -23,8 +23,6 @@ npm run dev
 
 默认访问：`http://localhost:3000`
 
-## Mock 数据（已迁移到 public）
-
 项目已将模拟数据放到 `public/mock`，部署后可直接通过静态路径访问：
 
 - `public/mock/dashboard-records.json`
@@ -66,19 +64,3 @@ npm run dev
 npm run lint
 npm run build
 ```
-
-## Cloudflare 部署建议
-
-如果你用 Cloudflare Pages 部署 Next.js：
-
-1. 构建命令：`npm run build`
-2. 输出目录：按你当前部署方案选择（Next.js 适配器方案或静态方案）
-3. 确认 `public/mock` 目录被包含在部署产物中
-
-部署后可直接验证：
-
-- `/mock/dashboard-records.json`
-- `/mock/personnel.json`
-- `/mock/help-tickets.json`
-
-以上三个地址可访问即代表模拟数据可用。
