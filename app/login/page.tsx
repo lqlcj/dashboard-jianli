@@ -1,5 +1,6 @@
 import { LoginForm } from "@/components/login-form"
 
+export const runtime = "edge"
 type LoginPageProps = {
   searchParams: Promise<{
     next?: string
