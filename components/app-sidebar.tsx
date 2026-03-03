@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import {
+  IconActivity,
   IconDashboard,
   IconHelp,
   IconInnerShadowTop,
@@ -47,6 +48,11 @@ const data = {
       title: "团队成员",
       url: "/dashboard/team-members",
       icon: IconUsers,
+    },
+    {
+      title: "指挥中心",
+      url: "/dashboard/command-center",
+      icon: IconActivity,
     },
   ],
   navSecondary: [

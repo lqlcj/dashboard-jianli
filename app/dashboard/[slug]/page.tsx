@@ -9,6 +9,7 @@ import {
   SettingsPageContent,
   TeamMembersReadOnlyPageContent,
 } from "@/components/dashboard-subroute-pages";
+import { CommandCenterPage } from "@/components/command-center";
 import {
   Card,
   CardContent,
@@ -36,6 +37,10 @@ export default async function DashboardSubPage({
 
   if (slug === "team-members") {
     return <TeamMembersReadOnlyPageContent />;
+  }
+
+  if (slug === "command-center") {
+    return <CommandCenterPage />;
   }
 
   if (slug === "settings") {

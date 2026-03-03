@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation"
 import { getDashboardTitleByPath } from "@/lib/dashboard-pages"
 import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
+import { WorkspaceStatusChip } from "@/components/workspace-status-chip"
 
 export function SiteHeader() {
   const pathname = usePathname()
@@ -19,6 +20,7 @@ export function SiteHeader() {
           className="mx-2 data-[orientation=vertical]:h-4"
         />
         <h1 className="text-base font-medium">{title}</h1>
+        <WorkspaceStatusChip />
       </div>
     </header>
   )
